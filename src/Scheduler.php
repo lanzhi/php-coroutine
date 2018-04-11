@@ -36,7 +36,7 @@ class Scheduler implements SchedulerInterface
      */
     public function register(TaskUnitInterface $unit): void
     {
-        $this->logger->info("register one Task Unit; type:{type}", [
+        $this->logger->debug("register one Task Unit; type:{type}", [
             'type' => get_class($unit)
         ]);
 
@@ -60,11 +60,31 @@ class Scheduler implements SchedulerInterface
              * @var Generator $generator
              */
             $generator = $this->queue->pop();
-            $generator->next();
+
+            $this->timer('current');
+            $value = $generator->current();
+            $this->logger->debug("tick current; time usage:".$this->timer('current'));
+
+            $this->timer('send');
+            $generator->send($value);
+            $this->logger->debug("tick send; time usage:".$this->timer('send'));
 
             if($generator->valid()){
                 $this->queue->push($generator);
             }
+        }
+    }
+
+    private function timer(string $mark)
+    {
+        static $list = [];
+        if(empty($list[$mark])){
+            $list[$mark] = microtime(true);
+            return 0;
+        }else{
+            $startTime = $list[$mark];
+            $list[$mark] = microtime(true);
+            return round($list[$mark] - $startTime, 6);
         }
     }
 }

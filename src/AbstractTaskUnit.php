@@ -10,13 +10,28 @@ namespace lanzhi\coroutine;
 
 
 use Generator;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Throwable;
 
 abstract class AbstractTaskUnit implements TaskUnitInterface
 {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
     private $isOver = false;
     private $returnValue;
     private $exception;
+
+    /**
+     * AbstractTaskUnit constructor.
+     * @param LoggerInterface|null $logger
+     */
+    public function __construct(LoggerInterface $logger=null)
+    {
+        $this->logger = $logger ?? new NullLogger();
+    }
 
     abstract protected function generate(): Generator;
 
@@ -40,7 +55,7 @@ abstract class AbstractTaskUnit implements TaskUnitInterface
 
     final public function run()
     {
-        $scheduler = new Scheduler();
+        $scheduler = new Scheduler($this->logger);
         $scheduler->register($this);
         $scheduler->run();
     }

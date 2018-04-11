@@ -19,6 +19,6 @@
         "psr-4": {"lanzhi\\coroutine\\": "src/"}
     },
     "require-dev": {
-
+        "symfony/console": "^4.0"
     }
 }
