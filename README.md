@@ -98,3 +98,20 @@ $scheduler->register(new Task5());
 $scheduler->run();
 
 ```
+
+Output：
+```shell
+Task1: step 1
+Task2: step 1
+Task3: step 1
+Task4: step 1
+Task1: step 2
+Task2: step 2
+Task3: step 2
+Task4: step 2
+Task1: step 3
+Task2: step 3
+Task3: step 3
+string(20) "test throw exception"
+Task5: step 2
+```
