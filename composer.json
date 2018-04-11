@@ -1,0 +1,23 @@
+{
+    "name": "lanzhi/php-coroutine",
+    "description": "php coroutine",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "蓝至",
+            "email": "i@lanzhi.me"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "psr/log": "^1.0",
+        "php-ds/php-ds": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {"lanzhi\\coroutine\\": "src/"}
+    },
+    "require-dev": {
+
+    }
+}
