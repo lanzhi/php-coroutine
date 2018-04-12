@@ -19,6 +19,14 @@
         "psr-4": {"lanzhi\\coroutine\\": "src/"}
     },
     "require-dev": {
-        "symfony/console": "^4.0"
+        "symfony/console": "^4.0",
+        "rmccue/requests": "^1.7",
+        "kriswallsmith/buzz": "^0.17.1",
+        "php-http/httplug": "^1.1",
+        "psr/link": "^1.0",
+        "nategood/httpful": "^0.2.20",
+        "guzzlehttp/guzzle": "^6.3",
+        "react/event-loop": "0.4.*",
+        "react/http-client": "0.5.8"
     }
 }
