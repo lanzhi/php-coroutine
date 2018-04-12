@@ -17,11 +17,6 @@ use React\HttpClient\Client;
 use React\HttpClient\Response;
 
 
-class AsyncComponent
-{
-
-}
-
 class HttpRequestTask extends AbstractTaskUnit
 {
     private $id;
