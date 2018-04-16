@@ -36,7 +36,7 @@ class Scheduler implements SchedulerInterface
      */
     public function register(TaskUnitInterface $unit): void
     {
-        $this->logger->debug("register one Task Unit; type:{type}", [
+        $this->logger->info("register one Task Unit; type:{type}", [
             'type' => get_class($unit)
         ]);
 
