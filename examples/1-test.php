@@ -8,10 +8,10 @@
 
 include __DIR__."/../vendor/autoload.php";
 
-use lanzhi\coroutine\AbstractTaskUnit;
+use lanzhi\coroutine\AbstractRoutine;
 use lanzhi\coroutine\Scheduler;
 
-class Task1 extends AbstractTaskUnit
+class Routine1 extends AbstractRoutine
 {
     protected function generate() : Generator
     {
@@ -27,7 +27,7 @@ class Task1 extends AbstractTaskUnit
         return get_called_class() . ": return";
     }
 }
-class Task2 extends AbstractTaskUnit
+class Routine2 extends AbstractRoutine
 {
     protected function generate() : Generator
     {
@@ -43,7 +43,7 @@ class Task2 extends AbstractTaskUnit
         return get_called_class() . ": return";
     }
 }
-class Task3 extends AbstractTaskUnit
+class Routine3 extends AbstractRoutine
 {
     protected function generate() : Generator
     {
@@ -60,7 +60,7 @@ class Task3 extends AbstractTaskUnit
     }
 }
 
-class Task4 extends AbstractTaskUnit
+class Routine4 extends AbstractRoutine
 {
     protected function generate() : Generator
     {
@@ -74,17 +74,17 @@ class Task4 extends AbstractTaskUnit
     }
 }
 
-class Task5 extends AbstractTaskUnit
+class Routine5 extends AbstractRoutine
 {
     protected function generate(): Generator
     {
-        $task = new Task4();
-        yield from $task(false);
+        $Routine = new Routine4();
+        yield from $Routine(false);
 
-        if($task->isOver() && $task->getException()){
-            var_dump($task->getException()->getMessage());
+        if($Routine->isOver() && $Routine->getException()){
+            var_dump($Routine->getException()->getMessage());
         }else{
-            var_dump($task->getReturn());
+            var_dump($Routine->getReturn());
         }
 
         yield;
@@ -92,10 +92,11 @@ class Task5 extends AbstractTaskUnit
     }
 }
 
-$scheduler = new Scheduler();
-$scheduler->register(new Task1());
-$scheduler->register(new Task2());
-$scheduler->register(new Task3());
-$scheduler->register(new Task5());
+$scheduler = Scheduler::getInstance();
+
+$scheduler->register(new Routine1());
+$scheduler->register(new Routine2());
+$scheduler->register(new Routine3());
+$scheduler->register(new Routine5());
 
 $scheduler->run();

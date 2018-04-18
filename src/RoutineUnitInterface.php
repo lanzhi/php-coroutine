@@ -13,33 +13,33 @@ use Generator;
 use Throwable;
 
 /**
- * Interface TaskUnitInterface
+ * Interface RoutineUnitInterface
  * @package lanzhi\coroutine\interfaces
  *
  *
- * TaskUnit 只能在调度器内或者其它 TaskUnit 内使用
+ * RoutineUnit 只能在调度器、Routine 或者其它 RoutineUnit 内使用
  * 使用方法如下:
  * ```php
  *
- * $task = new TaskUnit();
- * yield from $task();
- * $returnValue = $task->getReturn();
+ * $unit = new RoutineUnit();
+ * yield from $unit();
+ * $returnValue = $unit->getReturn();
  *
  * ```
  * 或者如下：
  * ```php
  *
- * $task = new TaskUnit();
- * yield from $task(false);
- * if(!$task->hasException()){
- *     $returnValue = $task->getReturn();
+ * $unit = new RoutineUnit();
+ * yield from $unit(false);
+ * if(!$unit->hasException()){
+ *     $returnValue = $unit->getReturn();
  * }else{
- *     $exception = $task->getException();
+ *     $exception = $unit->getException();
  * }
  *
  * ```
  */
-interface TaskUnitInterface
+interface RoutineUnitInterface
 {
     /**
      *
@@ -55,21 +55,21 @@ interface TaskUnitInterface
     public function run();
 
     /**
-     * 当前任务单元执行完毕时返回true，否则返回false
+     * 当前协程单元执行完毕时返回true，否则返回false
      * @return bool
      */
     public function isOver(): bool;
 
     /**
      * 配合其它方法使用才有意义
-     * 在当前任务执行完毕且没有异常情况下，返回任务单元执行结果，根据具体情况可能是 null
+     * 在当前任务执行完毕且没有异常情况下，返回协程单元执行结果，根据具体情况可能是 null
      * 任务没有开始执行、执行中、执行异常均返回 null
      * @return mixed
      */
     public function getReturn();
 
     /**
-     * 当且仅当任务执行过程中抛出异常且调度本任务单元时特意设置不允许抛出异常时返回 true
+     * 当且仅当任务执行过程中抛出异常且调度本协程单元时特意设置不允许抛出异常时返回 true
      * 当返回值为 true 时，调用 getException() 必须能够获取到相应异常类
      * @return bool
      */
@@ -79,4 +79,10 @@ interface TaskUnitInterface
      * @return Throwable
      */
     public function getException(): Throwable;
+
+    /**
+     * 由协程单元转换为协程
+     * @return RoutineInterface
+     */
+    public function toRoutine(): RoutineInterface;
 }

@@ -8,57 +8,57 @@
 
 include __DIR__."/../vendor/autoload.php";
 
-use lanzhi\coroutine\AbstractTaskUnit;
+use lanzhi\coroutine\AbstractRoutine;
 use lanzhi\coroutine\Scheduler;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 
-class Task1 extends AbstractTaskUnit
+class Routine1 extends AbstractRoutine
 {
     protected function generate(): Generator
     {
-        echo 'task1:start ', PHP_EOL;
+        echo 'Routine1:start ', PHP_EOL;
         $return = (yield file_get_contents('http://www.weather.com.cn/data/cityinfo/101270101.html'));
-        echo 'task1:end ', PHP_EOL;
+        echo 'Routine1:end ', PHP_EOL;
 
         return $return;
     }
 }
 
-class Task2 extends AbstractTaskUnit
+class Routine2 extends AbstractRoutine
 {
     protected function generate(): Generator
     {
-        echo 'task2:start ', PHP_EOL;
+        echo 'Routine2:start ', PHP_EOL;
         $return = (yield file_get_contents('https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=yourtoken'));
-        echo 'task2:end ', PHP_EOL;
+        echo 'Routine2:end ', PHP_EOL;
 
         return $return;
     }
 }
 
-class Task3 extends AbstractTaskUnit
+class Routine3 extends AbstractRoutine
 {
     protected function generate(): Generator
     {
-        $task1 = new Task1();
-        yield from $task1();
-        echo $task1->getReturn(), "\n";
+        $Routine1 = new Routine1();
+        yield from $Routine1();
+        echo $Routine1->getReturn(), "\n";
 
-        $task2 = new Task2();
-        yield from $task2();
-        echo $task2->getReturn(), "\n";
+        $Routine2 = new Routine2();
+        yield from $Routine2();
+        echo $Routine2->getReturn(), "\n";
     }
 }
 
 $output = new ConsoleOutput(ConsoleOutput::VERBOSITY_DEBUG);
 $logger = new ConsoleLogger($output);
-$scheduler = new Scheduler($logger);
+$scheduler = Scheduler::getInstance()->setLogger($logger);
 
 $startTime = microtime(true);
 
-for($i=0; $i<50; $i++){
-    $scheduler->register(new Task3());
+for($i=0; $i<5; $i++){
+    $scheduler->register(new Routine3());
 }
 
 $scheduler->run();

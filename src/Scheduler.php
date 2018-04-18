@@ -24,33 +24,65 @@ class Scheduler implements SchedulerInterface
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var static
+     */
+    private static $instance;
 
-    public function __construct(LoggerInterface $logger=null)
+    public static function getInstance():SchedulerInterface
     {
-        $this->queue = new Queue();
-        $this->logger = $logger ?? new NullLogger();
+        if(!self::$instance){
+            self::$instance = new static();
+        }
+
+        return self::$instance;
+    }
+
+    protected function __construct()
+    {
+        $this->queue  = new Queue();
+        $this->logger = new NullLogger();
+    }
+
+    public function buildRoutineUnit(Generator $generator):RoutineUnitInterface
+    {
+        return new GeneralUnit($generator, $this->logger);
+    }
+
+    public function buildRoutine(Generator $generator):RoutineInterface
+    {
+        return new GeneralRoutine($generator, $this->logger);
+    }
+
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+        return $this;
     }
 
     /**
-     * @param TaskUnitInterface $unit
+     * @param RoutineInterface $unit
+     * @return SchedulerInterface
      */
-    public function register(TaskUnitInterface $unit): void
+    public function register(RoutineInterface $unit): SchedulerInterface
     {
         $this->logger->info("register one Task Unit; type:{type}", [
             'type' => get_class($unit)
         ]);
 
         $this->queue->push($unit());
+        return $this;
     }
 
     /**
-     * @param TaskUnitInterface[] $units
+     * @param RoutineInterface[] $units
      */
-    public function batchRegister(array $units)
+    public function batchRegister(array $units): SchedulerInterface
     {
         foreach ($units as $unit){
             $this->register($unit);
         }
+        return $this;
     }
 
     public function run(): void
