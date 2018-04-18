@@ -11,5 +11,5 @@ namespace lanzhi\coroutine;
 
 interface RoutineInterface extends RoutineUnitInterface
 {
-    public function getId();
+    public function getId(): string;
 }

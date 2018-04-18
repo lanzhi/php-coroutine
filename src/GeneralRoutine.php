@@ -21,9 +21,9 @@ class GeneralRoutine extends AbstractRoutine
     /**
      * GeneralRoutine constructor.
      * @param Generator $generator
-     * @param int | string $id
+     * @param string $id
      */
-    public function __construct(Generator $generator, $id=null)
+    public function __construct(Generator $generator, string $id=null)
     {
         $this->generator = $generator;
         parent::__construct($id);
