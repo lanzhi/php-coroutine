@@ -18,10 +18,10 @@ class GeneralUnit extends AbstractUnit
      */
     private $generator;
 
-    public function __construct(Generator $generator, $logger = null)
+    public function __construct(Generator $generator)
     {
         $this->generator = $generator;
-        parent::__construct($logger);
+        parent::__construct();
     }
 
     protected function generate(): Generator

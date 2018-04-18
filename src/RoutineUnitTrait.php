@@ -23,13 +23,10 @@ trait RoutineUnitTrait
     private $returnValue;
     private $exception;
 
-    /**
-     * AbstractTaskUnit constructor.
-     * @param LoggerInterface|null $logger
-     */
-    public function __construct(LoggerInterface $logger=null)
+    public function setLogger(LoggerInterface $logger)
     {
-        $this->logger = $logger ?? new NullLogger();
+        $this->logger = $logger;
+        return $this;
     }
 
     abstract protected function generate(): Generator;
@@ -54,7 +51,7 @@ trait RoutineUnitTrait
 
     final public function run()
     {
-        Scheduler::create()->register($this)->run();
+        Scheduler::getInstance()->register($this->toRoutine())->run();
     }
 
     final public function isOver():bool

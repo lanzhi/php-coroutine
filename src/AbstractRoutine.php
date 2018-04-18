@@ -9,12 +9,31 @@
 namespace lanzhi\coroutine;
 
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+
 abstract class AbstractRoutine implements RoutineInterface
 {
+    private $id;
     use RoutineUnitTrait;
 
     final public function toRoutine(): RoutineInterface
     {
         return $this;
+    }
+
+    /**
+     * AbstractRoutine constructor.
+     * @param int|string $id
+     */
+    public function __construct($id=null)
+    {
+        $this->logger = new NullLogger();
+        $this->id = $id ?? get_called_class();
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 }

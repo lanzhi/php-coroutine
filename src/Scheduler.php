@@ -46,12 +46,12 @@ class Scheduler
 
     public function buildRoutineUnit(Generator $generator):RoutineUnitInterface
     {
-        return new GeneralUnit($generator, $this->logger);
+        return (new GeneralUnit($generator))->setLogger($this->logger);
     }
 
     public function buildRoutine(Generator $generator):RoutineInterface
     {
-        return new GeneralRoutine($generator, $this->logger);
+        return (new GeneralRoutine($generator, 'built-routine'))->setLogger($this->logger);
     }
 
     public function setLogger(LoggerInterface $logger)
@@ -61,26 +61,27 @@ class Scheduler
     }
 
     /**
-     * @param RoutineInterface $unit
+     * @param RoutineInterface $routine
      * @return self
      */
-    public function register(RoutineInterface $unit): self
+    public function register(RoutineInterface $routine): self
     {
-        $this->logger->info("register one Task Unit; type:{type}", [
-            'type' => get_class($unit)
+        $this->logger->info("register one routine; type:{type}; id:{id}", [
+            'type' => get_class($routine),
+            'id'   => $routine->getId()
         ]);
 
-        $this->queue->push($unit());
+        $this->queue->push($routine());
         return $this;
     }
 
     /**
-     * @param RoutineInterface[] $units
+     * @param RoutineInterface[] $routines
      */
-    public function batchRegister(array $units): self
+    public function batchRegister(array $routines): self
     {
-        foreach ($units as $unit){
-            $this->register($unit);
+        foreach ($routines as $routine){
+            $this->register($routine);
         }
         return $this;
     }

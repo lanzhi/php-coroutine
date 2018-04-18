@@ -94,8 +94,8 @@ class Routine5 extends AbstractRoutine
 
 $scheduler = Scheduler::getInstance();
 
-$scheduler->register(new Routine1());
-$scheduler->register(new Routine2());
+$scheduler->register(new Routine1(null));
+$scheduler->register(new Routine2(null));
 $scheduler->register(new Routine3());
 $scheduler->register(new Routine5());
 
