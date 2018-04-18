@@ -27,6 +27,6 @@ abstract class AbstractUnit implements RoutineUnitInterface
 
     final public function toRoutine(): RoutineInterface
     {
-        return new GeneralRoutine($this->generate(), $this->logger);
+        return new GeneralRoutine($this->generate(), 'built-from-routine-unit');
     }
 }
