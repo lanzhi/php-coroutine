@@ -29,10 +29,10 @@ abstract class AbstractRoutine implements RoutineInterface
     public function __construct(string $id=null)
     {
         $this->logger = new NullLogger();
-        $this->id = $id ?? get_called_class();
+        $this->id     = $id ?? get_called_class();
     }
 
-    public function getId()
+    public function getId():string
     {
         return $this->id;
     }
