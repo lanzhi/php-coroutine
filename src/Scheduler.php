@@ -14,7 +14,7 @@ use Ds\Queue;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class Scheduler implements SchedulerInterface
+class Scheduler
 {
     /**
      * @var Queue
@@ -29,7 +29,7 @@ class Scheduler implements SchedulerInterface
      */
     private static $instance;
 
-    public static function getInstance():SchedulerInterface
+    public static function getInstance():self
     {
         if(!self::$instance){
             self::$instance = new static();
@@ -62,9 +62,9 @@ class Scheduler implements SchedulerInterface
 
     /**
      * @param RoutineInterface $unit
-     * @return SchedulerInterface
+     * @return self
      */
-    public function register(RoutineInterface $unit): SchedulerInterface
+    public function register(RoutineInterface $unit): self
     {
         $this->logger->info("register one Task Unit; type:{type}", [
             'type' => get_class($unit)
@@ -77,7 +77,7 @@ class Scheduler implements SchedulerInterface
     /**
      * @param RoutineInterface[] $units
      */
-    public function batchRegister(array $units): SchedulerInterface
+    public function batchRegister(array $units): self
     {
         foreach ($units as $unit){
             $this->register($unit);
