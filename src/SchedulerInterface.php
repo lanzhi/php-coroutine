@@ -33,6 +33,12 @@ use Psr\Log\LoggerInterface;
 interface SchedulerInterface
 {
     /**
+     * 一个进程中只能有一个协程调度器
+     * @return SchedulerInterface
+     */
+    public static function getInstance(): self;
+
+    /**
      * @param RoutineInterface $unit
      */
     public function register(RoutineInterface $unit): self;
