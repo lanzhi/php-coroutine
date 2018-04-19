@@ -38,20 +38,20 @@ class Scheduler
         return self::$instance;
     }
 
+    public static function buildRoutineUnit(Generator $generator):RoutineUnitInterface
+    {
+        return new GeneralRoutineUnit($generator);
+    }
+
+    public static function buildRoutine(Generator $generator):RoutineInterface
+    {
+        return (new GeneralRoutineUnit($generator))->toRoutine();
+    }
+
     protected function __construct()
     {
         $this->queue  = new Queue();
         $this->logger = new NullLogger();
-    }
-
-    public function buildRoutineUnit(Generator $generator):RoutineUnitInterface
-    {
-        return (new GeneralRoutineUnit($generator))->setLogger($this->logger);
-    }
-
-    public function buildRoutine(Generator $generator):RoutineInterface
-    {
-        return (new GeneralRoutineUnit($generator))->toRoutine()->setLogger($this->logger);
     }
 
     public function setLogger(LoggerInterface $logger)
@@ -73,6 +73,11 @@ class Scheduler
 
         $this->queue->push($routine());
         return $this;
+    }
+
+    public function registerAsRoutine(Generator $generator): self
+    {
+        return $this->register(self::buildRoutine($generator));
     }
 
     /**
