@@ -98,4 +98,19 @@ interface RoutineUnitInterface
      * @return RoutineUnitInterface
      */
     public function setLogger(LoggerInterface $logger);
+
+    /**
+     * 为协程单元设置名称，以方便追踪识别
+     * @param string $name
+     * @return RoutineUnitInterface
+     */
+    public function setName(string $name);
+
+    public function getName():string;
+
+    /**
+     *
+     * @return array [id, name, createTime, startRunTime, endRunTime]
+     */
+    public function getMetaInfo():array;
 }

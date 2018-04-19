@@ -30,10 +30,13 @@ abstract class AbstractRoutine implements RoutineInterface
      * AbstractRoutine constructor.
      * @param string $id
      */
-    public function __construct(string $id=null)
+    public function __construct()
     {
-        $this->logger = $this->logger ?? new NullLogger();
-        $this->id     = $id ?? get_called_class();
+        $this->id         = uniqid();
+        $this->name       = get_called_class();
+        $this->logger     = $this->logger ?? new NullLogger();
+
+        $this->createTime = microtime(true);
     }
 
     public function getId():string

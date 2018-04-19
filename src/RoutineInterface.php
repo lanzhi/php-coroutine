@@ -16,6 +16,12 @@ interface RoutineInterface extends RoutineUnitInterface
     public function getId(): string;
 
     /**
+     * @param string $name
+     * @return RoutineInterface
+     */
+    public function setName(string $name);
+
+    /**
      * @param LoggerInterface $logger
      * @return RoutineInterface
      */

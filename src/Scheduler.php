@@ -25,6 +25,14 @@ class Scheduler
      */
     private $logger;
     /**
+     * @var string
+     */
+    private $currentRoutineName;
+    /**
+     * @var string
+     */
+    private $currentRoutineId;
+    /**
      * @var static
      */
     private static $instance;
@@ -61,6 +69,26 @@ class Scheduler
     }
 
     /**
+     * 获取当前正在执行的协程的ID
+     * 注意该ID由用户
+     * @return string
+     */
+    public function getCurrentRoutineId()
+    {
+        return $this->currentRoutineId ?? 'not-begin-running';
+    }
+
+    public function getCurrentRoutineName()
+    {
+        return $this->currentRoutineName ?? 'not-begin-running';
+    }
+
+    public function getRoutineQueueSize()
+    {
+        return $this->queue->count();
+    }
+
+    /**
      * @param RoutineInterface $routine
      * @return self
      */
@@ -71,7 +99,7 @@ class Scheduler
             'id'   => $routine->getId()
         ]);
 
-        $this->queue->push($routine());
+        $this->queue->push([$routine->getId(), $routine->getName(), $routine()]);
         return $this;
     }
 
@@ -97,18 +125,18 @@ class Scheduler
             /**
              * @var Generator $generator
              */
-            $generator = $this->queue->pop();
+            list($this->currentRoutineId, $this->currentRoutineName, $generator) = $this->queue->pop();
 
             $this->timer('current');
             $value = $generator->current();
-            $this->logger->debug("tick current; time usage:".$this->timer('current'));
+            $this->logger->debug("tick current; routine:{$this->currentRoutineName}#{$this->currentRoutineId}; time usage:".$this->timer('current'));
 
             $this->timer('send');
             $generator->send($value);
-            $this->logger->debug("tick send; time usage:".$this->timer('send'));
+            $this->logger->debug("tick send; routine:{$this->currentRoutineName}#{$this->currentRoutineId}; time usage:".$this->timer('send'));
 
             if($generator->valid()){
-                $this->queue->push($generator);
+                $this->queue->push([$this->currentRoutineId, $this->currentRoutineName, $generator]);
             }
         }
     }

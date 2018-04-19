@@ -20,12 +20,15 @@ abstract class AbstractRoutineUnit implements RoutineUnitInterface
      */
     public function __construct()
     {
-        $this->logger = $this->logger ?? new NullLogger();
+        $this->name       = get_called_class();
+        $this->logger     = $this->logger ?? new NullLogger();
+
+        $this->createTime = microtime(true);
     }
 
     final public function toRoutine(): RoutineInterface
     {
-        return new GeneralRoutine($this, 'built-from-routine-unit#'.uniqid());
+        return (new GeneralRoutine($this))->setName($this->getName().'#built-from-routine-unit');
     }
 
     final public function toRoutineUnit(): RoutineUnitInterface

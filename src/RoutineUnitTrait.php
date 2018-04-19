@@ -18,10 +18,15 @@ trait RoutineUnitTrait
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    private $logger;
+    private $name;
     private $isOver = false;
     private $returnValue;
     private $exception;
+
+    private $createTime;
+    private $startRunTime;
+    private $endRunTime;
 
     public function setLogger(LoggerInterface $logger)
     {
@@ -33,6 +38,7 @@ trait RoutineUnitTrait
 
     final public function __invoke(bool $throwable=true): Generator
     {
+        $this->startRunTime = microtime(true);
         try{
             $gen =  $this->generate();
             yield from $gen;
@@ -46,6 +52,7 @@ trait RoutineUnitTrait
             yield;
         }
 
+        $this->startRunTime = microtime(true);
         $this->isOver = true;
     }
 
@@ -72,5 +79,31 @@ trait RoutineUnitTrait
     public function getReturn()
     {
         return $this->returnValue;
+    }
+
+    public function setName(string $name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getMetaInfo(): array
+    {
+        $info = [
+            'name'        => $this->name,
+            'createTime'  => $this->createTime,
+            'startRunTime'=> $this->startRunTime,
+            'endRunTime'  => $this->endRunTime,
+        ];
+        if(isset($this->id)){
+            $info['id'] = $this->id;
+        }
+
+        return $info;
     }
 }

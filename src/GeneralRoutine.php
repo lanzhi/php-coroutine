@@ -23,10 +23,10 @@ class GeneralRoutine extends AbstractRoutine
      * @param RoutineUnitInterface $unit
      * @param string|null $id
      */
-    public function __construct(RoutineUnitInterface $unit, string $id=null)
+    public function __construct(RoutineUnitInterface $unit)
     {
         $this->unit = $unit;
-        parent::__construct($id);
+        parent::__construct();
     }
 
     protected function generate(): Generator
