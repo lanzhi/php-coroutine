@@ -46,12 +46,12 @@ class Scheduler
 
     public function buildRoutineUnit(Generator $generator):RoutineUnitInterface
     {
-        return (new GeneralUnit($generator))->setLogger($this->logger);
+        return (new GeneralRoutineUnit($generator))->setLogger($this->logger);
     }
 
     public function buildRoutine(Generator $generator):RoutineInterface
     {
-        return (new GeneralRoutine($generator, 'built-routine'))->setLogger($this->logger);
+        return (new GeneralRoutineUnit($generator))->toRoutine()->setLogger($this->logger);
     }
 
     public function setLogger(LoggerInterface $logger)

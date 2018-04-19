@@ -10,6 +10,7 @@ namespace lanzhi\coroutine;
 
 
 use Generator;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 /**
@@ -85,4 +86,16 @@ interface RoutineUnitInterface
      * @return RoutineInterface
      */
     public function toRoutine(): RoutineInterface;
+
+    /**
+     * 有协程转换为协程单元
+     * @return RoutineUnitInterface
+     */
+    public function toRoutineUnit(): RoutineUnitInterface;
+
+    /**
+     * @param LoggerInterface $logger
+     * @return RoutineUnitInterface
+     */
+    public function setLogger(LoggerInterface $logger);
 }

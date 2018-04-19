@@ -14,23 +14,28 @@ use Generator;
 class GeneralRoutine extends AbstractRoutine
 {
     /**
-     * @var Generator
+     * @var RoutineUnitInterface
      */
-    private $generator;
+    private $unit;
 
     /**
      * GeneralRoutine constructor.
-     * @param Generator $generator
-     * @param string $id
+     * @param RoutineUnitInterface $unit
+     * @param string|null $id
      */
-    public function __construct(Generator $generator, string $id=null)
+    public function __construct(RoutineUnitInterface $unit, string $id=null)
     {
-        $this->generator = $generator;
+        $this->unit = $unit;
         parent::__construct($id);
     }
 
     protected function generate(): Generator
     {
-        return $this->generator;
+        $unit = $this->unit;
+        yield from $unit();
+        if($unit->hasException()){
+            throw $unit->getException();
+        }
+        return $unit->getReturn();
     }
 }

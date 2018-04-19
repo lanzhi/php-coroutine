@@ -18,7 +18,7 @@ trait RoutineUnitTrait
     /**
      * @var LoggerInterface
      */
-    private $logger;
+    protected $logger;
     private $isOver = false;
     private $returnValue;
     private $exception;

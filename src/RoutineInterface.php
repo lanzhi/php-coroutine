@@ -9,7 +9,15 @@
 namespace lanzhi\coroutine;
 
 
+use Psr\Log\LoggerInterface;
+
 interface RoutineInterface extends RoutineUnitInterface
 {
     public function getId(): string;
+
+    /**
+     * @param LoggerInterface $logger
+     * @return RoutineInterface
+     */
+    public function setLogger(LoggerInterface $logger);
 }

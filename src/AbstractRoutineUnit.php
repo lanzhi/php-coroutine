@@ -9,24 +9,27 @@
 namespace lanzhi\coroutine;
 
 
-use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-abstract class AbstractUnit implements RoutineUnitInterface
+abstract class AbstractRoutineUnit implements RoutineUnitInterface
 {
     use RoutineUnitTrait;
 
     /**
      * AbstractTaskUnit constructor.
-     * @param LoggerInterface|null $logger
      */
     public function __construct()
     {
-        $this->logger = new NullLogger();
+        $this->logger = $this->logger ?? new NullLogger();
     }
 
     final public function toRoutine(): RoutineInterface
     {
-        return new GeneralRoutine($this->generate(), 'built-from-routine-unit');
+        return new GeneralRoutine($this, 'built-from-routine-unit#'.uniqid());
+    }
+
+    final public function toRoutineUnit(): RoutineUnitInterface
+    {
+        return $this;
     }
 }

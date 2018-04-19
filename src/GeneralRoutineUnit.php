@@ -11,7 +11,7 @@ namespace lanzhi\coroutine;
 
 use Generator;
 
-class GeneralUnit extends AbstractUnit
+class GeneralRoutineUnit extends AbstractRoutineUnit
 {
     /**
      * @var Generator
