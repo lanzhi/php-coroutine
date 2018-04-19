@@ -106,7 +106,8 @@ interface RoutineUnitInterface
      */
     public function setName(string $name);
 
-    public function getName():string;
+    public function getId(): string;
+    public function getName(): string;
 
     /**
      *

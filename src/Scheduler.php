@@ -94,8 +94,8 @@ class Scheduler
      */
     public function register(RoutineInterface $routine): self
     {
-        $this->logger->info("register one routine; type:{type}; id:{id}", [
-            'type' => get_class($routine),
+        $this->logger->info("register one routine; name:{name}; id:{id}", [
+            'name' => get_class($routine),
             'id'   => $routine->getId()
         ]);
 
@@ -129,11 +129,11 @@ class Scheduler
 
             $this->timer('current');
             $value = $generator->current();
-            $this->logger->debug("tick current; routine:{$this->currentRoutineName}#{$this->currentRoutineId}; time usage:".$this->timer('current'));
+            $this->logger->debug("tick current; name:{$this->currentRoutineName}; id:{$this->currentRoutineId}; time usage:".$this->timer('current'));
 
             $this->timer('send');
             $generator->send($value);
-            $this->logger->debug("tick send; routine:{$this->currentRoutineName}#{$this->currentRoutineId}; time usage:".$this->timer('send'));
+            $this->logger->debug("tick send; name:{$this->currentRoutineName}; id:{$this->currentRoutineId}; time usage:".$this->timer('send'));
 
             if($generator->valid()){
                 $this->queue->push([$this->currentRoutineId, $this->currentRoutineName, $generator]);

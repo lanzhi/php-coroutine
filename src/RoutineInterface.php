@@ -13,8 +13,6 @@ use Psr\Log\LoggerInterface;
 
 interface RoutineInterface extends RoutineUnitInterface
 {
-    public function getId(): string;
-
     /**
      * @param string $name
      * @return RoutineInterface
