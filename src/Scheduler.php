@@ -95,7 +95,7 @@ class Scheduler
     public function register(RoutineInterface $routine): self
     {
         $this->logger->info("register one routine; name:{name}; id:{id}", [
-            'name' => get_class($routine),
+            'name' => $routine->getName(),
             'id'   => $routine->getId()
         ]);
 
