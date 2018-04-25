@@ -18,7 +18,7 @@ class FlexibleRoutine extends AbstractRoutine
      */
     private $units = [];
 
-    public function add(RoutineUnitInterface $unit)
+    public function append(RoutineUnitInterface $unit)
     {
         $this->units[$unit->getId()] = $unit;
         return $this;

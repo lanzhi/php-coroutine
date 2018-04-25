@@ -53,14 +53,14 @@ $scheduler = Scheduler::getInstance()->setLogger($logger);
 
 $routine = new \lanzhi\coroutine\FlexibleRoutine();
 $routine->setLogger($logger);
-$routine->add(new Routine1());
-$routine->add(new Routine1());
+$routine->append(new Routine1());
+$routine->append(new Routine1());
 $scheduler->register($routine);
 
 $routine = new \lanzhi\coroutine\FlexibleRoutine();
 $routine->setLogger($logger);
-$routine->add(new Routine2());
-$routine->add(new Routine2());
+$routine->append(new Routine2());
+$routine->append(new Routine2());
 $scheduler->register($routine);
 
 $scheduler->run();
