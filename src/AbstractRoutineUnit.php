@@ -73,7 +73,7 @@ abstract class AbstractRoutineUnit implements RoutineUnitInterface
 
     final public function run()
     {
-        Scheduler::getInstance()->register($this->toRoutine())->run();
+        Scheduler::getInstance(true)->register($this->toRoutine())->run();
     }
 
     final public function isOver():bool

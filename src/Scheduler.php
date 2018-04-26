@@ -37,8 +37,12 @@ class Scheduler
      */
     private static $instance;
 
-    public static function getInstance():self
+    public static function getInstance(bool $isNew = false):self
     {
+        if($isNew){
+            return new static();
+        }
+
         if(!self::$instance){
             self::$instance = new static();
         }
