@@ -50,13 +50,33 @@ class Scheduler
         return self::$instance;
     }
 
-    public static function buildRoutineUnit(Generator $generator):RoutineUnitInterface
+    /**
+     * @param Generator|callable $generator
+     * @return RoutineUnitInterface
+     */
+    public static function buildRoutineUnit($generator):RoutineUnitInterface
     {
+        if(is_callable($generator)){
+            $generator = $generator();
+        }
+        if(!($generator instanceof Generator)){
+            throw new \Exception("invalid argument; argument must be callable or a generator");
+        }
         return new GeneralRoutineUnit($generator);
     }
 
-    public static function buildRoutine(Generator $generator):RoutineInterface
+    /**
+     * @param Generator|callable $generator
+     * @return RoutineInterface
+     */
+    public static function buildRoutine($generator):RoutineInterface
     {
+        if(is_callable($generator)){
+            $generator = $generator();
+        }
+        if(!($generator instanceof Generator)){
+            throw new \Exception("invalid argument; argument must be callable or a generator");
+        }
         return (new GeneralRoutineUnit($generator))->toRoutine();
     }
 
@@ -107,8 +127,19 @@ class Scheduler
         return $this;
     }
 
-    public function registerAsRoutine(Generator $generator): self
+    /**
+     * @param Generator|callable $generator
+     * @return Scheduler
+     * @throws \Exception
+     */
+    public function registerAsRoutine($generator): self
     {
+        if(is_callable($generator)){
+            $generator = $generator();
+        }
+        if(!($generator instanceof Generator)){
+            throw new \Exception("invalid argument; argument must be callable or a generator");
+        }
         return $this->register(self::buildRoutine($generator));
     }
 
